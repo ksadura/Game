@@ -48,7 +48,7 @@ public class Game {
     {
         this.blocks = new Vector<>();
         String[] array = Config.cfg.getProperty("map-Level1").split(",");
-        int[][] map = new int[9][9];
+        int[][] map = new int[array.length][array.length];
         int c = 0;
         for(String str : array)
         {
