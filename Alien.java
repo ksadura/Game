@@ -1,5 +1,6 @@
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -10,6 +11,8 @@ public class Alien extends Sprite {
     private static BufferedImage image;
     /** Przeskalowana grafika */
     private static Image icon;
+    /** Kierunek w ktorym porusza sie potwor*/
+    private int direction;
 
     /** Konstruktor
      * @param x Wspolrzedna x
@@ -19,6 +22,26 @@ public class Alien extends Sprite {
         this.height = Integer.parseInt(Config.cfg.getProperty("alienH"));
         this.width = Integer.parseInt(Config.cfg.getProperty("alienW"));
         uploadImage();
+    }
+    /** Ruch potworow w roznych kierunkach zaleznych od zmiennej 'direction' */
+    public void move()
+    {
+        switch(this.direction)
+        {
+            case 0: // moving right
+                x += 1;
+                break;
+            case 1: // moving left
+                x -= 1;
+                break;
+            case 2: // moving down
+                y += 1;
+                break;
+            case 3: // moving up
+                y -= 1;
+                break;
+
+        }
     }
 
     public void paintBlock(Graphics g, int x, int y) {
@@ -53,4 +76,24 @@ public class Alien extends Sprite {
     public int getY() {
         return (int) Math.round((double)(this.y*MyPanel.windowH)/360);
     }
+
+    /** Metoda zwracajaca aktualny kierunek
+     * @return kierunek */
+    public int getDirection()
+    {
+        return this.direction;
+    }
+    /** Metoda ustawiajaca kierunek po napotkaniu przeszkody
+     * @param direct nowy kierunek*/
+    public void setDirection(int direct)
+    {
+        this.direction = direct;
+    }
+    /** Metoda zwracajaca pomniejszone wymiary potwora. Sluzy do dokladniejszej kolizji z bohaterem
+     * @return zmienna typu Rectangle2D.Double*/
+    public Rectangle2D.Double getHeart()
+    {
+        return new Rectangle2D.Double(getX() + 0.25*getWidth(),getY() + 0.25*getHeight(),0.5*getWidth(),0.5*getWidth());
+    }
+
 }

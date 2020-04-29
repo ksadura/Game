@@ -41,11 +41,23 @@ public class Block extends Sprite {
 
     /** Skalowanie ikony bloku */
     public static void uploadImage() {
-        int w = Integer.parseInt(Config.cfg.getProperty("blockW"));
-        int h = Integer.parseInt(Config.cfg.getProperty("blockH"));
-        icon = loadImage().getScaledInstance((int)((double)w*MyPanel.windowW)/360,(int)((double)w*MyPanel.windowH)/360, Image.SCALE_DEFAULT);
+//        int w = Integer.parseInt(Config.cfg.getProperty("blockW"));
+//        int h = Integer.parseInt(Config.cfg.getProperty("blockH"));
+        icon = loadImage().getScaledInstance((int)((double)MyPanel.windowW)/9,(int)((double)MyPanel.windowH)/9, Image.SCALE_DEFAULT);
     }
 
     public int getX() { return (int) Math.round((double)(this.x*(MyPanel.windowW/9))); }
     public int getY() { return (int) Math.round((double)(this.y*(MyPanel.windowH/9))); }
+    public int getWidth()
+    {
+        return (int) Math.round((double)(MyPanel.windowW)/9);
+    }
+    public int getHeight()
+    {
+        return (int) Math.round((double)(MyPanel.windowH)/9);
+    }
+    public Rectangle getBounds()
+    {
+        return new Rectangle(this.getX(),this.getY(),this.getWidth(),this.getHeight());
+    }
 }

@@ -6,12 +6,13 @@ import java.awt.event.ComponentEvent;
 /**Klasa MyFrame dziedziczaca po JFrame sluzaca do tworzenia okna gry.To do niej zostaje dodany komponent typu JPanel
  * @see javax.swing.JFrame  */
 public class MyFrame extends JFrame {
+    private MyPanel game = new MyPanel();
     /** Konstruktor domyslny*/
     public MyFrame()
     {
         super("Dyna Blaster");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.add(new MyPanel());
+        this.add(game);
         pack();
         this.setVisible(true);
         setLocationRelativeTo(null);
@@ -22,6 +23,9 @@ public class MyFrame extends JFrame {
             MyPanel.windowW = c.getWidth();
             MyPanel.windowH = c.getHeight();
             Game.getResizedImage();
+            if (Game.isRunning && Handler.currentState == Handler.STATES.GAME)
+                game.pause();
+
         }
     });
     }

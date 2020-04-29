@@ -6,7 +6,7 @@ import java.io.IOException;
 
 /** Blok zniszczalny */
 public class Obstacle extends Sprite{
-    /** Wczytana grafika z pliku konfiguracyjnego */
+    /** Wczytana grafika z pliku*/
     private static BufferedImage image;
     /** Przeskalowana grafika */
     private static Image icon;
@@ -41,8 +41,8 @@ public class Obstacle extends Sprite{
 
     /** Metoda sluzaca do skalowania ikony przeszkody */
     public static void uploadImage() {
-        int w = Integer.parseInt(Config.cfg.getProperty("obstacleW"));
-        int h = Integer.parseInt(Config.cfg.getProperty("obstacleH"));
+//        int w = Integer.parseInt(Config.cfg.getProperty("obstacleW"));
+//        int h = Integer.parseInt(Config.cfg.getProperty("obstacleH"));
         icon = loadImage().getScaledInstance((int)((double)(MyPanel.windowW/9)),(int)((double)(MyPanel.windowH/9)), Image.SCALE_DEFAULT);
     }
 
@@ -51,5 +51,17 @@ public class Obstacle extends Sprite{
     }
     public int getY() {
         return (int) Math.round((double)(this.y*(MyPanel.windowH/9)));
+    }
+    public int getWidth()
+    {
+        return (int) Math.round((double)(MyPanel.windowW)/9);
+    }
+    public int getHeight()
+    {
+        return (int) Math.round((double)(MyPanel.windowH)/9);
+    }
+    public Rectangle getBounds()
+    {
+        return new Rectangle(this.getX(),this.getY(),this.getWidth(),this.getHeight());
     }
 }
