@@ -11,7 +11,7 @@ public class Notification extends JDialog {
     /** Miejsce do wpisania tekstu - nicku */
     private JTextArea text = new JTextArea();
     /** Informacja o zbyt malej ilosci znakow */
-    private JLabel warning = new JLabel("minimum trzy znaki");
+    private JLabel warning = new JLabel("minimum trzy znaki, bez spacji");
     /** Przycisk zatwierdzajacay i zapisujacy nick i wynik */
     private JButton button = new JButton("ZAPISZ");
     /** Uzyta czcionka*/
@@ -33,7 +33,7 @@ public class Notification extends JDialog {
         setLayout(null);
         button.addActionListener(actionEvent -> {
             typedNick = text.getText();
-            if (typedNick.length() <= 2)
+            if (typedNick.length() <= 2 || typedNick.matches(".*\\s.*"))
                 warning.setVisible(true);
             else {
                 dispose();
@@ -72,7 +72,7 @@ public class Notification extends JDialog {
         label.setBounds(70,0,140,30);
         text.setBounds(60,35,140,19);
         button.setBounds(79,70,100,30);
-        warning.setBounds(80,105,140,30);
+        warning.setBounds(50,105,180,30);
         add(label);
         add(text);
         add(button);
