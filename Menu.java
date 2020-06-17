@@ -20,6 +20,7 @@ public class Menu {
     public Menu()
     {
         background = new Background(0,0);
+        loadTitle();
         uploadTitle();
         buttons = new Vector<>();
         loadButtons();
@@ -31,12 +32,21 @@ public class Menu {
         Graphics2D g2D = (Graphics2D) g;
         background.paintBlock(g2D,background.getX(),background.getY());
         g2D.drawImage(title,0,0,null);
-        for (Button b : buttons)
-            b.paintBlock(g2D,b.getX(),b.getY());
+        for (Button b : buttons) {
+            if(b.name.equals("back") || b.name.equals("logout") && !Handler.isAppOnline())
+                break;
+            b.paintBlock(g2D, b.getX(), b.getY());
+        }
+    }
+    public void renderBackButton(Graphics g){
+        Graphics2D g2D = (Graphics2D) g;
+        Button b = this.getButton("back");
+        b.paintBlock(g2D,b.getX(),b.getY());
+
     }
     /** Metoda sluzaca do zaladowania grafiki z pliku config.txt
      * @return Napis tytulowy gry */
-    public static BufferedImage loadTitle() {
+    public static void loadTitle() {
         File file = new File(Config.cfg.getProperty("titleIMG"));
         try{
             image = ImageIO.read(file); //
@@ -44,11 +54,10 @@ public class Menu {
         catch (IOException e) {
             e.printStackTrace();
         }
-        return image;
     }
     /** Skalowanie napisu tytulowego gry */
     public static void uploadTitle() {
-        title = loadTitle().getScaledInstance((int)((double)(MyPanel.windowW)),(int)((double)(MyPanel.windowH/2)), Image.SCALE_SMOOTH);
+        title = image.getScaledInstance((int)((double)(MyPanel.windowW)),(int)((double)(MyPanel.windowH/2)), Image.SCALE_SMOOTH);
     }
 
     /** Metoda sluzaca do zaladowania przyciskow */
@@ -57,7 +66,10 @@ public class Menu {
         buttons.add(new Button(180,240,"start"));
         buttons.add(new Button(180,295,"rank"));
         buttons.add(new Button(180,350,"help"));
-        buttons.add(new Button(180,405,"quit"));
+        buttons.add(new Button(180,460,"quit"));
+        buttons.add(new Button(180,405,"login"));
+        buttons.add(new Button(180,405,"logout"));
+        buttons.add (new Button(10,500,"back"));
     }
     /** Funkcja pomocnicza, ktora powoduje uaktualnienie uzytych plikow graficznych podczas skalowania Menu */
     public static void uploadMenu()
@@ -78,6 +90,5 @@ public class Menu {
         }
         return button;
     }
-
 
 }

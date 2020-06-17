@@ -18,17 +18,21 @@ public class Block extends Sprite {
         super(x,y);
         this.width = Integer.parseInt(Config.cfg.getProperty("blockW"));
         this.height = Integer.parseInt(Config.cfg.getProperty("blockH"));
+        loadImage();
         uploadImage();
-
     }
+
+    /** Metoda sluzaca do rysowania elementow mapy
+     * @param g Zmienna sluzaca do wywolywania funkcji rysujacych
+     * @param x,y Informacja o miejscu w ktorym zostanie narysowana grafika
+     */
     public void paintBlock(Graphics g, int x, int y) {
         Graphics2D graphics2D = (Graphics2D) g;
         graphics2D.drawImage(icon, x, y, null);
     }
 
-    /** Metoda sluzaca do zaladowania grafiki z pliku config.txt
-     * @return Grafika bloku niezniszczalnego*/
-    public static BufferedImage loadImage() {
+    /** Metoda sluzaca do zaladowania grafiki z pliku config.txt */
+    public static void loadImage() {
         File file = new File(Config.cfg.getProperty("blockIMG"));
         try{
             image = ImageIO.read(file); //
@@ -36,14 +40,11 @@ public class Block extends Sprite {
         catch (IOException e) {
             e.printStackTrace();
         }
-        return image;
     }
 
     /** Skalowanie ikony bloku */
     public static void uploadImage() {
-//        int w = Integer.parseInt(Config.cfg.getProperty("blockW"));
-//        int h = Integer.parseInt(Config.cfg.getProperty("blockH"));
-        icon = loadImage().getScaledInstance((int)((double)MyPanel.windowW)/9,(int)((double)MyPanel.windowH)/9, Image.SCALE_DEFAULT);
+        icon = image.getScaledInstance((int)((double)MyPanel.windowW)/9,(int)((double)MyPanel.windowH)/9, Image.SCALE_DEFAULT);
     }
 
     public int getX() { return (int) Math.round((double)(this.x*(MyPanel.windowW/9))); }

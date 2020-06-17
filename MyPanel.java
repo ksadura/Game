@@ -1,6 +1,6 @@
-import javax.naming.ldap.Control;
 import javax.swing.*;
 import java.awt.*;
+import java.util.Vector;
 
 /** Klasa MyPanel dziedziczaca po klasie JPanel oraz implementujaca po Runnable
  *  odpowiedzialna za wyswietlanie panelu wraz z wygladem gry i animacja
@@ -16,12 +16,16 @@ public class MyPanel extends JPanel implements Runnable{
     public static int windowH = Integer.parseInt(Config.cfg.getProperty("windowH"));
     /** Zmienna przechowujaca szerokosc okna gry*/
     public static int windowW = Integer.parseInt(Config.cfg.getProperty("windowW"));
-    /** Zmienne typu JLabel wyswietlajace informacje podczas gry */
-    private JLabel escLabel, healthLabel, bombsLabel;
+    /** Wektor przechowujacy obiekty klasy JLabel wyswietlajace informacje podczas gry */
+    private static Vector<Label> labels;
     /** Zmienna reprezentujaca menu gry*/
     private Menu menu;
     /** Opoznienie w milisekundach */
     private final static int DELAY = Integer.parseInt(Config.cfg.getProperty("gameDelay"));
+    /** Zmienna reprezentujaca najlepsze wyniki uzytkownikow*/
+    private Ranking ranking;
+    /** Instrukcja i pomoc dla uzytkownika */
+    private Help help;
 
     /**Konstruktor*/
     public MyPanel()
@@ -32,16 +36,10 @@ public class MyPanel extends JPanel implements Runnable{
       setFocusable(true);
       setFocusTraversalKeysEnabled(false);
       setLayout(new FlowLayout(FlowLayout.RIGHT));
-      escLabel = new JLabel("'ESC' - PAUZA/WZNOWIENIE");
-      escLabel.setForeground(Color.WHITE);
-      healthLabel = new JLabel();
-      healthLabel.setForeground(Color.WHITE);
-      bombsLabel = new JLabel();
-      bombsLabel.setForeground(Color.WHITE);
-      add(escLabel);
-      add(healthLabel);
-      add(bombsLabel);
+      this.loadLabels();
       menu = new Menu();
+      ranking = new Ranking();
+      help = new Help(0,0);
     }
 
     /**Metoda wyswietlajaca wszystkie narysowane komponenty
@@ -50,16 +48,27 @@ public class MyPanel extends JPanel implements Runnable{
     {
         super.paintComponent(g);
         if (Handler.currentState == Handler.STATES.GAME) {
-            dynaBlaster.render(g);
-            escLabel.setVisible(true);
-            healthLabel.setVisible(true);
-            bombsLabel.setVisible(true);
+            dynaBlaster.render(g, this);
+            menu.renderBackButton(g);
+            showLabels(true);
         }
         else if (Handler.currentState == Handler.STATES.MENU) {
             menu.render(g);
-            escLabel.setVisible(false);
-            healthLabel.setVisible(false);
-            bombsLabel.setVisible(false);
+            showLabels(false);
+        }
+        else if (Handler.currentState == Handler.STATES.LOADING){
+            dynaBlaster.loading.render(g);
+            showLabels(false);
+        }
+        else if (Handler.currentState == Handler.STATES.RANIKING){
+            ranking.render(g);
+            showLabels(false);
+            menu.renderBackButton(g);
+        }
+        else if (Handler.currentState == Handler.STATES.HELP){
+            help.paintBlock(g,0,0);
+            menu.renderBackButton(g);
+            showLabels(false);
         }
 
     }
@@ -82,24 +91,17 @@ public class MyPanel extends JPanel implements Runnable{
     /** Silnik gry */
     @Override
     public void run() {
-        long beforeTime, diffTime, sleep;
-        beforeTime = System.currentTimeMillis();
         while(Thread.currentThread() == this.thread)
         {
-            uploadLabels();
+            uploadLabelsAndButtons();
             this.dynaBlaster.animate();
             repaint();
-            diffTime = beforeTime - System.currentTimeMillis();
-            sleep = DELAY - diffTime;
-            if (sleep < 0)
-                sleep = 2;
             try {
                 checkPause();
-                Thread.sleep(sleep);
+                Thread.sleep(DELAY);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            beforeTime = System.currentTimeMillis();
         }
 
     }
@@ -128,10 +130,41 @@ public class MyPanel extends JPanel implements Runnable{
             }
         }
     }
+    /**Tworzenie etykiet*/
+    public void loadLabels(){
+        labels = new Vector<>();
+        labels.add(new Label("health"));
+        labels.add(new Label("points"));
+        labels.add(new Label("bombs"));
+        labels.add(new Label("clock"));
+        labels.add(new Label("esc"));
+        for (Label l : labels)
+            this.add(l);
+
+    }
+    /** Ukrywanie/zakrywanie etykiet*/
+    public void showLabels(boolean b){
+        if (b)
+            labels.forEach(Label::uncoverAll);
+        else
+            labels.forEach(Label::coverAll);
+    }
     /** Aktualizacja etykiet */
-    public void uploadLabels()
+    public void uploadLabelsAndButtons()
     {
-        healthLabel.setText("ZYCIA: " + dynaBlaster.bomber.getHealth());
-        bombsLabel.setText("POZOSTALE BOMBY: " + (15 - Bomb.counter));
+        for (Label l : labels) {
+            l.uploadLabel(this.dynaBlaster);
+            if (l.getName().equals("clock") && Clock.timeLeft() < 15)
+                l.setForeground(new Color(243,78,78));
+        }
+    }
+    /** Skalowanie etykiet */
+    public static void getResizedLabels(int cW, int cH){
+        for (Label l : labels)
+            l.resizeFont(cW, cH);
+    }
+    /** Zwracanie rankingu */
+    public Ranking getRanking(){
+        return this.ranking;
     }
 }

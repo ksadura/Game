@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.awt.*;
 
 /** Abstrakcyjna klasa pelniaca role interfejsu dla pozostalych
@@ -29,11 +30,7 @@ public abstract class Sprite {
     /** Metoda skalujaca pozycje na planszy
      * @return Aktualna wspolrzedna y*/
     public abstract int getY();
-    /** Metoda sluzaca do rysowania obiektow graficznych danej klasy
-     * @param g Zmienna sluzaca do wywolywania funkcji rysujacych
-     * @param x Informacja o miejscu w ktorym zostanie narysowana grafika
-     * @param y Informacja o mijescu w ktorym zostanie narysowana grafika*/
-    public abstract void paintBlock(Graphics g,int x,int y);
+    //public abstract void paintBlock(Graphics g, int x, int y, JPanel jP);
     /** Metoda zwracajaca aktualna szerokosc
      * @return szerokosc */
     public int getWidth()

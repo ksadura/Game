@@ -1,4 +1,3 @@
 @ECHO OFF
 set CLASSPATH=.
-java Main
-pause
+javac Main.java

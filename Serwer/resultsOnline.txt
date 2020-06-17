@@ -1,0 +1,1 @@
+gracz=0.0-giermek=5.0-krzysiek=5.0-

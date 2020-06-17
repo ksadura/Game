@@ -1,24 +1,20 @@
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+
 
 /** Klas reprezentujaca bomby w grze */
 public class Bomb extends Sprite implements ActionListener {
-    /** Wczytana grafika bomby */
-    private static BufferedImage image;
-    /** Przeskalowana grafika */
-    private static Image icon;
+    /** Wczytana i przeskalowana grafika */
+    private  Image icon;
     /** Zmienna typu Timer.swing pelniaca funkcje watku dla Bomby */
-    private Timer timer = new Timer(3000,this);
+    private Timer timer = new Timer(4000,this);
     /** Flaga informujaca czy bomba jest gotowa do detonacji*/
     protected boolean isReady;
     /** Licznik zuzytych bomb*/
     public static int counter;
+
     /** Konstruktor klasy
      * @param x wspolrzedna X
      * @param y wspolrzedna Y*/
@@ -46,29 +42,22 @@ public class Bomb extends Sprite implements ActionListener {
         return (int) Math.round((double)(this.height*MyPanel.windowH)/360);
     }
 
-    @Override
-    public void paintBlock(Graphics g, int x, int y) {
+    /** Metoda sluzaca do rysowania bomb
+     * @param g Zmienna sluzaca do wywolywania funkcji rysujacych
+     * @param x,y Informacja o miejscu w ktorym zostanie narysowana grafika
+     * @param panel ImageObserver */
+    public void paintBlock(Graphics g, int x, int y, JPanel panel) {
         Graphics2D graphics2D = (Graphics2D) g;
-        graphics2D.drawImage(icon, x, y, null);
+        graphics2D.drawImage(icon, x, y, panel);
 
     }
-    /** Metoda sluzaca do zaladowania grafiki z pliku config.txt
-     * @return Grafika bomby*/
-    public static BufferedImage loadImage() {
-        File file = new File(Config.cfg.getProperty("bombIMG"));
-        try{
-            image = ImageIO.read(file); //
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-        return image;
-    }
+
     /** Skalowanie ikony*/
-    public static void uploadImage() {
+    public void uploadImage() {
         int w = Integer.parseInt(Config.cfg.getProperty("bombW"));
         int h = Integer.parseInt(Config.cfg.getProperty("bombH"));
-        icon = loadImage().getScaledInstance((int)((double)w*MyPanel.windowW)/360,(int)((double)h*MyPanel.windowH)/360, Image.SCALE_SMOOTH);
+        icon = Toolkit.getDefaultToolkit().createImage(Config.cfg.getProperty("bombIMG"))
+                .getScaledInstance((int)((double)w*MyPanel.windowW)/360,(int)((double)h*MyPanel.windowH)/360, Image.SCALE_REPLICATE);
     }
 
     /** Metoda wywolujaca sie co 3 sekundy. W niej ustawiane sa widocznosc i gotowosc
@@ -83,6 +72,6 @@ public class Bomb extends Sprite implements ActionListener {
      * @return obiekt klasy Rectangle*/
     public Rectangle getBounds()
     {
-        return new Rectangle(getX() - getWidth(),getY() - getHeight(),3*getWidth(),3*getHeight());
+        return new Rectangle(getX(),getY(),icon.getWidth(null),icon.getHeight(null));
     }
 }

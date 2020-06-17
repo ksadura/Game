@@ -21,6 +21,7 @@ public class Button extends Sprite {
     {
         super(x,y);
         this.name = name;
+        loadImage();
         uploadImage();
     }
     /** Nadpisana metoda z klasy Sprite*/
@@ -36,7 +37,7 @@ public class Button extends Sprite {
     }
     /** Metoda sluzaca do zaladowania grafiki z pliku config.txt
      * @return Grafika przycisku*/
-    public BufferedImage loadImage() {
+    public void loadImage() {
         File file = new File(Config.cfg.getProperty(name+"Button"));
         try{
             image = ImageIO.read(file); //
@@ -44,15 +45,20 @@ public class Button extends Sprite {
         catch (IOException e) {
             e.printStackTrace();
         }
-        return image;
     }
 
     /** Skalowanie ikony*/
     public void uploadImage() {
-        icon = loadImage().getScaledInstance((int)((double)MyPanel.windowW)/3,(int)((double)MyPanel.windowH)/12, Image.SCALE_SMOOTH);
+        if (!name.equals("back"))
+            icon = image.getScaledInstance((int)((double)MyPanel.windowW)/3,(int)((double)MyPanel.windowH)/12, Image.SCALE_SMOOTH);
+        else
+            icon = image.getScaledInstance((int)((double)MyPanel.windowW)/6,(int)((double)MyPanel.windowH)/24, Image.SCALE_SMOOTH);
     }
 
-    @Override
+    /** Metoda sluzaca do rysowania przyciskow
+     * @param g Zmienna sluzaca do wywolywania funkcji rysujacych
+     * @param x,y Informacja o miejscu w ktorym zostana narysowane guziki
+     */
     public void paintBlock(Graphics g, int x, int y) {
         Graphics2D graphics2D = (Graphics2D) g;
         graphics2D.drawImage(icon, x, y, null);
