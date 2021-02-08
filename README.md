@@ -13,5 +13,5 @@ Game in 2D. This application was created as a part of PROZE course.
 
 *For more details and information go to [instruction](./instrukcja.pdf)*
 
-Authors:
-*Dorota Floriańczyk & Krzysztof Sadura
+**Authors:**
+* Dorota Floriańczyk & Krzysztof Sadura
