@@ -1,7 +1,7 @@
 # Game-Dyna-Blaster
 Game in 2D. This application was created as a part of PROZE course.
 
-Project is writtten in Java and *Java.Swing* package was used for creating GUI. In the game we exploited threading elements such as: Thread.Sleep(), notifyAll(), wait() or Runnable interface.
+Project is writtten in Java and *Java.Swing* package was used for creating GUI. In the game we exploited threading elements such as: Thread.Sleep(), notifyAll(), wait() or Runnable interface. Furthermore, our application using sockets may communicate with the server to download the best online results.
 
 ![Menu](./Resources/Menu.png)  |  ![Game](./Resources/Screen.png)
 :-------------------------:|:-------------------------:
