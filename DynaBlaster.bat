@@ -1,4 +1,4 @@
 @ECHO OFF
-set CLASSPATH=.
+set CLASSPATH=./Source
 java Main
 pause

@@ -1,4 +1,3 @@
 @ECHO OFF
-set CLASSPATH=.
-javac -d ./CompilationFiles Main.java
+javac -cp ./Source ./Source/Main.java
 pause

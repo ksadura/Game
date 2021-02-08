@@ -82,7 +82,7 @@ public class Hero extends Sprite implements ActionListener {
         catch (IOException e) {
             e.printStackTrace();
         }
-        effect = Toolkit.getDefaultToolkit().createImage("hurt.png")
+        effect = Toolkit.getDefaultToolkit().createImage("./Resources/hurt.png")
                 .getScaledInstance(MyPanel.windowW,MyPanel.windowH,Image.SCALE_SMOOTH);
     }
 
