@@ -11,7 +11,7 @@ Game in 2D. This application was created as a part of PROZE course.
 3. Compile game ```Kompilacja.bat```
 4. Run game ```DynaBlaster.bat``` 
 
-*For more details and information about game and requirements go to [instruction](./instrukcja.pdf) (only Polish version)*
+*For more details and information about the game and requirements go to [instruction](./instrukcja.pdf) (only Polish version)*
 
 **Authors:**
 * Dorota Floriańczyk, Krzysztof Sadura
