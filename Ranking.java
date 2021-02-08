@@ -31,7 +31,7 @@ public class Ranking {
         uploadImage();
         this.background = new Background(0,0);
         try {
-            f = Font.createFont(Font.TRUETYPE_FONT, new File("04b_25__.ttf"));
+            f = Font.createFont(Font.TRUETYPE_FONT, new File("./Resources/04b_25__.ttf"));
         }
         catch (IOException | FontFormatException e){
             e.printStackTrace();

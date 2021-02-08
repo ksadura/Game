@@ -35,7 +35,7 @@ public class Info extends JDialog {
     /** Pobieranie i ustawianie czcionki*/
     public void setFont(){
         try {
-            f = Font.createFont(Font.TRUETYPE_FONT, new File("04b_25__.ttf"));
+            f = Font.createFont(Font.TRUETYPE_FONT, new File("./Resources/04b_25__.ttf"));
         }
         catch (IOException | FontFormatException e){
             e.printStackTrace();

@@ -19,7 +19,7 @@ public class Label extends JLabel {
         this.name = name;
         this.setForeground(Color.WHITE);
         try {
-            f = Font.createFont(Font.TRUETYPE_FONT, new File("04b_25__.ttf"));
+            f = Font.createFont(Font.TRUETYPE_FONT, new File("./Resources/04b_25__.ttf"));
         }
         catch (IOException | FontFormatException e){
             e.printStackTrace();
